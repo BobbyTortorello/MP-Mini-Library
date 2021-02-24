@@ -31,6 +31,7 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
      
      var locationManager = CLLocationManager()
 
+     //ViewDidLoad()
      override func viewDidLoad() {
           super.viewDidLoad()
           
@@ -45,10 +46,10 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
                     print("Failure to get document: \(err)")
                } else {
                     if let document = document, document.exists {
-                         self.libraryNumberLabel.text = "Library Number \((document.get("number") as! String))"
-                         self.libraryNameLabel.text = (document.get("name") as! String)
-                         self.libraryAddressLabel.text = (document.get("location") as! String)
-                         self.libraryAddress = (document.get("location") as! String)
+                         self.libraryNumberLabel.text = "Library Number \((document.get("number") as? String) ?? String())"
+                         self.libraryNameLabel.text = (document.get("name") as? String)
+                         self.libraryAddressLabel.text = (document.get("location") as? String)
+                         self.libraryAddress = (document.get("location") as? String ?? String())
                     }
                }
           }
@@ -93,6 +94,7 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
      
 }
 
+// MARK: TableViewDataSource
 extension LibraryViewController: UITableViewDataSource {
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
           print("This is book count: \(books.count)")
@@ -111,7 +113,7 @@ extension LibraryViewController: UITableViewDataSource {
      }
 }
 
-//MARK: TableViewCell Class
+// MARK: TableViewCell Class
 class BooksTableViewCell: UITableViewCell {
      
      @IBOutlet var bookTitleLabel: UILabel!

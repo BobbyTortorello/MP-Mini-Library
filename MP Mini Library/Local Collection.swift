@@ -34,16 +34,16 @@ final class LocalCollection<T: DocumentSerializable> {
         return self.items[index]
     }
     
-    init(query: Query, updateHandler: @escaping ([DocumentChange]) -> ()) {
+    init(query: Query, updateHandler: @escaping ([DocumentChange]) -> Void) {
         self.items = []
         self.query = query
         self.updateHandler = updateHandler
     }
     
     func index(of document: DocumentSnapshot) -> Int? {
-        for i in 0 ..< documents.count {
-            if documents[i].documentID == document.documentID {
-                return i
+        for index in 0 ..< documents.count {
+            if documents[index].documentID == document.documentID {
+                return index
             }
         }
         
@@ -79,4 +79,3 @@ final class LocalCollection<T: DocumentSerializable> {
         stopListening()
     }
 }
-

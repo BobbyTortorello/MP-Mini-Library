@@ -13,7 +13,7 @@ struct Library {
      var name: String
      var location: String
      
-     var dicitionaryString: [String:Any] {
+     var dicitionaryString: [String: Any] {
           return [
                "number": number,
                "name": name,
@@ -23,7 +23,7 @@ struct Library {
 }
 
 extension Library: DocumentSerializable {
-     init?(dictionary: [String : Any]) {
+     init?(dictionary: [String: Any]) {
           guard let number = dictionary["number"] as? String,
                 let name = dictionary["name"] as? String,
                 let location = dictionary["location"] as? String else {return nil}

@@ -14,11 +14,11 @@ class LibrariesViewController: UIViewController, UITableViewDelegate {
 
      @IBOutlet var libraryTableView: UITableView!
      
-     private var libraires : [Library] = []
+     private var libraires: [Library] = []
      
-     var library : Library?
+     var library: Library?
      
-     let db = Firestore.firestore()
+     let firestore = Firestore.firestore()
           
      @IBOutlet weak var filterOptions: UIPickerView!
                
@@ -32,7 +32,7 @@ class LibrariesViewController: UIViewController, UITableViewDelegate {
      }
      
      func getData() {
-          db.collection("miniLibraries").getDocuments { (querySnapshot, err) in
+          firestore.collection("miniLibraries").getDocuments { (querySnapshot, err) in
                if let err = err {
                     print("Could not get files: \(err)")
                } else {
@@ -63,22 +63,21 @@ class LibrariesViewController: UIViewController, UITableViewDelegate {
      }
 }
 
-//MARK: TableView Functions
+// MARK: TableView Functions
 extension LibrariesViewController: UITableViewDataSource {
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
           return libraires.count
      }
      
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-          let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LibraryTableViewCell
+          let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? LibraryTableViewCell
           let library = libraires[indexPath.row]
-          cell.populate(library: library)
-          return cell
+          cell?.populate(library: library)
+          return cell ?? LibraryTableViewCell()
      }
 }
 
-
-//MARK: TableViewCell Class
+// MARK: TableViewCell Class
 class LibraryTableViewCell: UITableViewCell {
      
      @IBOutlet var libraryNumberLabel: UILabel!
