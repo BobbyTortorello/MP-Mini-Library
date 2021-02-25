@@ -39,30 +39,105 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
           bookTableView.dataSource = self
           
           locationManager.delegate = self
+          locationManager.requestWhenInUseAuthorization()
+          locationManager.startUpdatingLocation()
           
-          let docRef = db.collection("miniLibraries").document("miniLibrary#\(libraryNumber)")
-          docRef.getDocument { (document, err) in
-               if let err = err {
-                    print("Failure to get document: \(err)")
-               } else {
-                    if let document = document, document.exists {
-                         self.libraryNumberLabel.text = "Library Number \((document.get("number") as? String) ?? String())"
-                         self.libraryNameLabel.text = (document.get("name") as? String)
-                         self.libraryAddressLabel.text = (document.get("location") as? String)
-                         self.libraryAddress = (document.get("location") as? String ?? String())
+          getData()
+     }
+     
+     func getData() {
+          if libraryNumber.count < 2 {
+               let docRef = db.collection("miniLibraries").document("miniLibrary#0\(libraryNumber)")
+               docRef.getDocument { (document, err) in
+                    if let err = err {
+                         print("Failure to get document: \(err)")
+                    } else {
+                         if let document = document, document.exists {
+                              self.libraryNumberLabel.text = "Library Number \((document.get("number") as? String) ?? String())"
+                              self.libraryNameLabel.text = (document.get("name") as? String)
+                              self.libraryAddressLabel.text = (document.get("location") as? String)
+                              self.libraryAddress = (document.get("location") as? String ?? String())
+                              // Setting MapView From Locatation Within Firebase
+                              self.geoCoder.geocodeAddressString(document.get("location") as? String ?? String()) { (placemarks, err) in
+                                   if let err = err {
+                                        print(err)
+                                        
+                                        let alert = UIAlertController(title: "Sorry There Was a Problem Getting the Locaton", message: "Please Try Again Later", preferredStyle: .alert)
+                                        let okay = UIAlertAction(title: "Okay", style: .default, handler: nil)
+                                        let tryAgain = UIAlertAction(title: "Try Again", style: .default) { (action) in
+                                             self.getData()
+                                        }
+                                        alert.addAction(okay)
+                                        alert.addAction(tryAgain)
+                                   } else {
+                                        let libraryLocation = placemarks?.first?.location
+                                        let center = libraryLocation?.coordinate
+                                        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                                        let region = MKCoordinateRegion(center: center!, span: span)
+                                        self.libraryMapView.setRegion(region, animated: false)
+                                   }
+                              }
+                         }
                     }
                }
-          }
-          
-          docRef.collection("books").getDocuments { (querySnapshot, err) in
-               if let err = err {
-                    print("Could not get files: \(err)")
-               } else {
-                    for document in querySnapshot!.documents {
-                         let document = Books(dictionary: document.data())
-                         self.books.append(document!)
-                         print(self.books.count)
-                         self.bookTableView.reloadData()
+               
+               docRef.collection("books").getDocuments { (querySnapshot, err) in
+                    if let err = err {
+                         print("Could not get files: \(err)")
+                    } else {
+                         for document in querySnapshot!.documents {
+                              let document = Books(dictionary: document.data())
+                              self.books.append(document!)
+                              print(self.books.count)
+                              self.bookTableView.reloadData()
+                         }
+                    }
+               }
+          } else {
+               let docRef = db.collection("miniLibraries").document("miniLibrary#\(libraryNumber)")
+               docRef.getDocument { (document, err) in
+                    if let err = err {
+                         print("Failure to get document: \(err)")
+                    } else {
+                         if let document = document, document.exists {
+                              self.libraryNumberLabel.text = "Library Number \((document.get("number") as? String) ?? String())"
+                              self.libraryNameLabel.text = (document.get("name") as? String)
+                              self.libraryAddressLabel.text = (document.get("location") as? String)
+                              self.libraryAddress = (document.get("location") as? String ?? String())
+                              // Setting MapView From Locatation Within Firebase
+                              self.geoCoder.geocodeAddressString(document.get("location") as? String ?? String()) { (placemarks, err) in
+                                   if let err = err {
+                                        print(err)
+                                        
+                                        let alert = UIAlertController(title: "Sorry There Was a Problem Getting the Locaton", message: "Please Try Again Later", preferredStyle: .alert)
+                                        let okay = UIAlertAction(title: "Okay", style: .default, handler: nil)
+                                        let tryAgain = UIAlertAction(title: "Try Again", style: .default) { (action) in
+                                             self.getData()
+                                        }
+                                        alert.addAction(okay)
+                                        alert.addAction(tryAgain)
+                                   } else {
+                                        let libraryLocation = placemarks?.first?.location
+                                        let center = libraryLocation?.coordinate
+                                        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                                        let region = MKCoordinateRegion(center: center!, span: span)
+                                        self.libraryMapView.setRegion(region, animated: false)
+                                   }
+                              }
+                         }
+                    }
+               }
+               
+               docRef.collection("books").getDocuments { (querySnapshot, err) in
+                    if let err = err {
+                         print("Could not get files: \(err)")
+                    } else {
+                         for document in querySnapshot!.documents {
+                              let document = Books(dictionary: document.data())
+                              self.books.append(document!)
+                              print(self.books.count)
+                              self.bookTableView.reloadData()
+                         }
                     }
                }
           }
@@ -78,20 +153,6 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
          alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
          present(alert, animated: true, completion: nil)
      }
-     
-//     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//          locationManager.stopUpdatingLocation()
-//          let center = libraryLocation.coordinate
-//          let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-//          let region = MKCoordinateRegion(center: center!, span: span)
-//          libraryMapView.setRegion(region, animated: true)
-//     }
-//
-//     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
-//     {
-//         return
-//     }
-     
 }
 
 // MARK: TableViewDataSource

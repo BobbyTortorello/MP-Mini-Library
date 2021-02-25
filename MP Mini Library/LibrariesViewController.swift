@@ -19,16 +19,12 @@ class LibrariesViewController: UIViewController, UITableViewDelegate {
      var library: Library?
      
      let firestore = Firestore.firestore()
-          
-     @IBOutlet weak var filterOptions: UIPickerView!
                
      override func viewDidLoad() {
      super.viewDidLoad()
           libraryTableView.delegate = self
           libraryTableView.dataSource = self
           getData()
-                    
-          filterOptions.isHidden = true
      }
      
      func getData() {

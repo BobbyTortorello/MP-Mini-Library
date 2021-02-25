@@ -62,5 +62,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Used to find which libraries are closest to the User&apos;s Location</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Used to find which libraries are closest to the User&apos;s Location</string>
 </dict>
 </plist>
