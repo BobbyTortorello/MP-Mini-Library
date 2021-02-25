@@ -57,26 +57,7 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
                               self.libraryNameLabel.text = (document.get("name") as? String)
                               self.libraryAddressLabel.text = (document.get("location") as? String)
                               self.libraryAddress = (document.get("location") as? String ?? String())
-                              // Setting MapView From Locatation Within Firebase
-                              self.geoCoder.geocodeAddressString(document.get("location") as? String ?? String()) { (placemarks, err) in
-                                   if let err = err {
-                                        print(err)
-                                        
-                                        let alert = UIAlertController(title: "Sorry There Was a Problem Getting the Locaton", message: "Please Try Again Later", preferredStyle: .alert)
-                                        let okay = UIAlertAction(title: "Okay", style: .default, handler: nil)
-                                        let tryAgain = UIAlertAction(title: "Try Again", style: .default) { (action) in
-                                             self.getData()
-                                        }
-                                        alert.addAction(okay)
-                                        alert.addAction(tryAgain)
-                                   } else {
-                                        let libraryLocation = placemarks?.first?.location
-                                        let center = libraryLocation?.coordinate
-                                        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                                        let region = MKCoordinateRegion(center: center!, span: span)
-                                        self.libraryMapView.setRegion(region, animated: false)
-                                   }
-                              }
+                              self.getLocation()
                          }
                     }
                }
@@ -104,26 +85,7 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
                               self.libraryNameLabel.text = (document.get("name") as? String)
                               self.libraryAddressLabel.text = (document.get("location") as? String)
                               self.libraryAddress = (document.get("location") as? String ?? String())
-                              // Setting MapView From Locatation Within Firebase
-                              self.geoCoder.geocodeAddressString(document.get("location") as? String ?? String()) { (placemarks, err) in
-                                   if let err = err {
-                                        print(err)
-                                        
-                                        let alert = UIAlertController(title: "Sorry There Was a Problem Getting the Locaton", message: "Please Try Again Later", preferredStyle: .alert)
-                                        let okay = UIAlertAction(title: "Okay", style: .default, handler: nil)
-                                        let tryAgain = UIAlertAction(title: "Try Again", style: .default) { (action) in
-                                             self.getData()
-                                        }
-                                        alert.addAction(okay)
-                                        alert.addAction(tryAgain)
-                                   } else {
-                                        let libraryLocation = placemarks?.first?.location
-                                        let center = libraryLocation?.coordinate
-                                        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                                        let region = MKCoordinateRegion(center: center!, span: span)
-                                        self.libraryMapView.setRegion(region, animated: false)
-                                   }
-                              }
+                              self.getLocation()
                          }
                     }
                }
@@ -139,6 +101,70 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
                               self.bookTableView.reloadData()
                          }
                     }
+               }
+          }
+     }
+     
+     func spaceInBetween() {
+          self.geoCoder.geocodeAddressString(libraryAddress) { (placemarks, err) in
+               if let err = err {
+                    print(err)
+               } else {
+                    let libraryLocation = placemarks?.first?.location
+                    let userLocation = self.libraryMapView.userLocation
+                    
+                    let distanceInM = userLocation.location?.distance(from: libraryLocation ?? CLLocation())
+                    print(distanceInM!)
+                    if distanceInM! > 160.934 {
+                         let distanceInMi = distanceInM! / 1609.34
+                         let simplifiedDistance = Double(round(100*distanceInMi)/100)
+                         self.libraryLocationLabel.text = "The library is \(String(simplifiedDistance)) miles away from you."
+                       
+                    } else {
+                         let distanceInFt = distanceInM! * 3.281
+                         let simplifiedDistance = Double(round(100*distanceInFt)/100)
+                         self.libraryLocationLabel.text = "The library is \(String(simplifiedDistance)) feet away from you."
+                         
+                         if distanceInFt < 1 {
+                              let distanceInIn = 12 / distanceInFt
+                              let simplifiedDistance = Double(round(100*distanceInIn)/100)
+                              self.libraryLocationLabel.text = "The Library is \(String(simplifiedDistance)) inches away from you."
+                              
+                              if distanceInIn == 1 {
+                                   self.libraryLocationLabel.text = "The Library is \(String(simplifiedDistance)) inch away from you."
+
+                              }
+                         }
+                    }
+                    
+               }
+          }
+     }
+     
+     func getLocation() {
+          // Setting MapView From Locatation Within Firebase
+          self.geoCoder.geocodeAddressString(libraryAddress) { (placemarks, err) in
+               if let err = err {
+                    print(err)
+                    
+                    let alert = UIAlertController(title: "Sorry There Was a Problem Getting the Locaton", message: "Please Try Again Later", preferredStyle: .alert)
+                    let okay = UIAlertAction(title: "Okay", style: .default, handler: nil)
+                    let tryAgain = UIAlertAction(title: "Try Again", style: .default) { (action) in
+                         self.getData()
+                    }
+                    alert.addAction(okay)
+                    alert.addAction(tryAgain)
+               } else {
+                    let libraryLocation = placemarks?.first?.location
+                    let center = libraryLocation?.coordinate
+                    let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                    let region = MKCoordinateRegion(center: center!, span: span)
+                    self.libraryMapView.setRegion(region, animated: false)
+                    let annotation = MKPointAnnotation()
+                    annotation.coordinate = libraryLocation?.coordinate ?? CLLocationCoordinate2D()
+                    annotation.title = "Books: \(self.books.count)"
+                    self.libraryMapView.addAnnotation(annotation)
+                    self.spaceInBetween()
                }
           }
      }

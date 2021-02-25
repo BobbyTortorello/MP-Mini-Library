@@ -15,6 +15,7 @@ class LibrariesViewController: UIViewController, UITableViewDelegate {
      @IBOutlet var libraryTableView: UITableView!
      
      private var libraires: [Library] = []
+     private var books: [Books] = []
      
      var library: Library?
      
@@ -79,10 +80,12 @@ class LibraryTableViewCell: UITableViewCell {
      @IBOutlet var libraryNumberLabel: UILabel!
      @IBOutlet var libraryAddressLabel: UILabel!
      @IBOutlet var libraryDistanceLabel: UILabel!
+     @IBOutlet var booksAvailableLabel: UILabel!
      
      func populate(library: Library) {
           libraryNumberLabel.text = "Library Number \(library.number)"
           libraryAddressLabel.text = library.location
           libraryDistanceLabel.text = "Distance Away from User 0.5 Miles"
+          booksAvailableLabel.text = "Number of Books at Library: \(library.books)"
      }
 }
