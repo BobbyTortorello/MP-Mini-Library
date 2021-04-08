@@ -57,7 +57,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
           // the application transitions to the background.
           (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
      }
-
-
 }
-

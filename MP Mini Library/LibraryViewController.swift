@@ -22,13 +22,12 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
 //     @IBOutlet weak var bookButton: UIStepper!
 //     @IBOutlet var bookTableView: UITableView!
      var libraryNumber = String()
-     
      var libraryAddress = String()
      let geoCoder = CLGeocoder()
 
-     let db = Firestore.firestore()
+     let database = Firestore.firestore()
 
-     private var books : [Books] = []
+     private var books: [Books] = []
      
      var locationManager = CLLocationManager()
 
@@ -47,7 +46,7 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
      
      func getData() {
           if libraryNumber.count < 2 {
-               let docRef = db.collection("miniLibraries").document("miniLibrary#0\(libraryNumber)")
+               let docRef = database.collection("miniLibraries").document("miniLibrary#0\(libraryNumber)")
                docRef.getDocument { (document, err) in
                     if let err = err {
                          print("Failure to get document: \(err)")
@@ -75,7 +74,7 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
                     }
                }
           } else {
-               let docRef = db.collection("miniLibraries").document("miniLibrary#\(libraryNumber)")
+               let docRef = database.collection("miniLibraries").document("miniLibrary#\(libraryNumber)")
                docRef.getDocument { (document, err) in
                     if let err = err {
                          print("Failure to get document: \(err)")
@@ -170,8 +169,8 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
 //     }
 
      @IBAction func librariesButton(_ sender: UIBarButtonItem) {
-        let vc =  storyboard?.instantiateViewController(identifier: "librariesVC")
-        navigationController?.pushViewController(vc!, animated: false)
+        let nvc =  storyboard?.instantiateViewController(identifier: "librariesVC")
+        navigationController?.pushViewController(nvc!, animated: false)
      }
 
      func loadingError() {

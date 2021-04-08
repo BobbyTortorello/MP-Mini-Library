@@ -13,7 +13,6 @@ struct Library {
      var name: String
      var location: String
      var books: String
-     
      var dicitionaryString: [String: Any] {
           return [
                "number": number,

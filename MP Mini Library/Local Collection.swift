@@ -13,12 +13,11 @@ protocol DocumentSerializable {
 }
 
 final class LocalCollection<T: DocumentSerializable> {
-    
     private(set) var items: [T]
     private(set) var documents: [DocumentSnapshot] = []
     let query: Query
     
-    private let updateHandler: ([DocumentChange]) -> ()
+    private let updateHandler: ([DocumentChange]) -> Void
     
     private var listener: ListenerRegistration? {
         didSet {

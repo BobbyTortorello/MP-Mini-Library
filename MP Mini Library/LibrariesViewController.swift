@@ -15,7 +15,6 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
 // MARK: Variables
      @IBOutlet var libraryTableView: UITableView!
      @IBOutlet weak var favoritesCollectionView: UICollectionView!
-     
      private var libraires: [Library] = []
      private var books: [Books] = []
      
@@ -88,19 +87,19 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
      
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
           switch segue.identifier {
-               case "collectionView":
-                    guard let indexPath = (sender as? UIView)?.findCollectionViewIndexPath() else { return }
-                    guard let nvc = segue.destination as? LibraryViewController else { return }
-                    nvc.libraryNumber = favorites[indexPath.row]
-               default: return
+          case "collectionView":
+               guard let indexPath = (sender as? UIView)?.findCollectionViewIndexPath() else { return }
+               guard let nvc = segue.destination as? LibraryViewController else { return }
+               nvc.libraryNumber = favorites[indexPath.row]
+          default: return
           }
           
           switch segue.identifier {
-               case "tableView":
-                    guard let indexPath = (sender as? UIView)?.findTableViewIndexPath() else {return}
-                    guard let nvc = segue.destination as? LibraryViewController else {return}
-                    nvc.libraryNumber = libraires[indexPath.row].number
-               default: return
+          case "tableView":
+               guard let indexPath = (sender as? UIView)?.findTableViewIndexPath() else {return}
+               guard let nvc = segue.destination as? LibraryViewController else {return}
+               nvc.libraryNumber = libraires[indexPath.row].number
+          default: return
           }
      }
 }

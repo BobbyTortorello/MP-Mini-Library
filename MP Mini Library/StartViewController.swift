@@ -16,8 +16,7 @@ class StartViewController: UIViewController {
      }
 
      @IBAction func viewLibrariesButton(_ sender: UIButton) {
-          let vc = storyboard?.instantiateViewController(identifier: "librariesVC")
-          navigationController?.pushViewController(vc!, animated: false)
+          let nvc = storyboard?.instantiateViewController(identifier: "librariesVC")
+          navigationController?.pushViewController(nvc!, animated: false)
      }
-     
 }
