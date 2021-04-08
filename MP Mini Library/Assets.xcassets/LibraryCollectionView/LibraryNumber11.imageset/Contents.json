@@ -1,12 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "Library(25x25).png",
+      "filename" : "LibraryNumber11.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Library(75x75).png",
       "idiom" : "universal",
       "scale" : "2x"
     },

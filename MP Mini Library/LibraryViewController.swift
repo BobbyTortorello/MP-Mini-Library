@@ -9,17 +9,18 @@ import UIKit
 import MapKit
 import FirebaseFirestore
 
+@available(iOS 13.0, *)
 class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate {
 
      @IBOutlet var libraryNumberLabel: UILabel!
-     @IBOutlet var libraryNameLabel: UILabel!
-     @IBOutlet var libraryImageView: UIImageView!
-     @IBOutlet var libraryLocationLabel: UILabel!
-     @IBOutlet var libraryMapView: MKMapView!
-     @IBOutlet var libraryAddressLabel: UILabel!
-     
-     @IBOutlet weak var bookButton: UIStepper!
-     @IBOutlet var bookTableView: UITableView!
+//     @IBOutlet var libraryNameLabel: UILabel!
+//     @IBOutlet var libraryImageView: UIImageView!
+//     @IBOutlet var libraryLocationLabel: UILabel!
+//     @IBOutlet var libraryMapView: MKMapView!
+//     @IBOutlet var libraryAddressLabel: UILabel!
+//
+//     @IBOutlet weak var bookButton: UIStepper!
+//     @IBOutlet var bookTableView: UITableView!
      var libraryNumber = String()
      
      var libraryAddress = String()
@@ -35,11 +36,10 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
      override func viewDidLoad() {
           super.viewDidLoad()
           
-          bookTableView.delegate = self
-          bookTableView.dataSource = self
+//          bookTableView.delegate = self
+//          bookTableView.dataSource = self
           
           locationManager.delegate = self
-          locationManager.requestWhenInUseAuthorization()
           locationManager.startUpdatingLocation()
           
           getData()
@@ -53,11 +53,11 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
                          print("Failure to get document: \(err)")
                     } else {
                          if let document = document, document.exists {
-                              self.libraryNumberLabel.text = "Library Number \((document.get("number") as? String) ?? String())"
-                              self.libraryNameLabel.text = (document.get("name") as? String)
-                              self.libraryAddressLabel.text = (document.get("location") as? String)
+                              self.libraryNumberLabel.text = "Library #\((document.get("number") as? String) ?? String())"
+//                              self.libraryNameLabel.text = (document.get("name") as? String)
+//                              self.libraryAddressLabel.text = (document.get("location") as? String)
                               self.libraryAddress = (document.get("location") as? String ?? String())
-                              self.getLocation()
+                              //self.getLocation()
                          }
                     }
                }
@@ -70,7 +70,7 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
                               let document = Books(dictionary: document.data())
                               self.books.append(document!)
                               print(self.books.count)
-                              self.bookTableView.reloadData()
+//                              self.bookTableView.reloadData()
                          }
                     }
                }
@@ -81,11 +81,11 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
                          print("Failure to get document: \(err)")
                     } else {
                          if let document = document, document.exists {
-                              self.libraryNumberLabel.text = "Library Number \((document.get("number") as? String) ?? String())"
-                              self.libraryNameLabel.text = (document.get("name") as? String)
-                              self.libraryAddressLabel.text = (document.get("location") as? String)
+                              self.libraryNumberLabel.text = "Library #\((document.get("number") as? String) ?? String())"
+//                              self.libraryNameLabel.text = (document.get("name") as? String)
+//                              self.libraryAddressLabel.text = (document.get("location") as? String)
                               self.libraryAddress = (document.get("location") as? String ?? String())
-                              self.getLocation()
+                              //self.getLocation()
                          }
                     }
                }
@@ -98,7 +98,7 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
                               let document = Books(dictionary: document.data())
                               self.books.append(document!)
                               print(self.books.count)
-                              self.bookTableView.reloadData()
+                              //self.bookTableView.reloadData()
                          }
                     }
                }
@@ -111,77 +111,83 @@ class LibraryViewController: UIViewController, UITableViewDelegate, CLLocationMa
                     print(err)
                } else {
                     let libraryLocation = placemarks?.first?.location
-                    let userLocation = self.libraryMapView.userLocation
+                    //let userLocation = self.libraryMapView.userLocation
                     
-                    let distanceInM = userLocation.location?.distance(from: libraryLocation ?? CLLocation())
-                    print(distanceInM!)
-                    if distanceInM! > 160.934 {
-                         let distanceInMi = distanceInM! / 1609.34
-                         let simplifiedDistance = Double(round(100*distanceInMi)/100)
-                         self.libraryLocationLabel.text = "The library is \(String(simplifiedDistance)) miles away from you."
-                       
-                    } else {
-                         let distanceInFt = distanceInM! * 3.281
-                         let simplifiedDistance = Double(round(100*distanceInFt)/100)
-                         self.libraryLocationLabel.text = "The library is \(String(simplifiedDistance)) feet away from you."
-                         
-                         if distanceInFt < 1 {
-                              let distanceInIn = 12 / distanceInFt
-                              let simplifiedDistance = Double(round(100*distanceInIn)/100)
-                              self.libraryLocationLabel.text = "The Library is \(String(simplifiedDistance)) inches away from you."
-                              
-                              if distanceInIn == 1 {
-                                   self.libraryLocationLabel.text = "The Library is \(String(simplifiedDistance)) inch away from you."
-
-                              }
-                         }
-                    }
-                    
+//                    let distanceInM = userLocation.location?.distance(from: libraryLocation ?? CLLocation())
+//                    print(distanceInM!)
+//                    if distanceInM! > 160.934 {
+//                         let distanceInMi = distanceInM! / 1609.34
+//                         let simplifiedDistance = Double(round(100*distanceInMi)/100)
+//                         //self.libraryLocationLabel.text = "The library is \(String(simplifiedDistance)) miles away from you."
+//
+//                    } else {
+//                         let distanceInFt = distanceInM! * 3.281
+//                         let simplifiedDistance = Double(round(100*distanceInFt)/100)
+//                         //self.libraryLocationLabel.text = "The library is \(String(simplifiedDistance)) feet away from you."
+//
+//                         if distanceInFt < 1 {
+//                              let distanceInIn = 12 / distanceInFt
+//                              let simplifiedDistance = Double(round(100*distanceInIn)/100)
+//                              //self.libraryLocationLabel.text = "The Library is \(String(simplifiedDistance)) inches away from you."
+//
+//                              if distanceInIn == 1 {
+//                                   //self.libraryLocationLabel.text = "The Library is \(String(simplifiedDistance)) inch away from you."
+//
+//                              }
+//                         }
+//                    }
+          
                }
           }
      }
      
-     func getLocation() {
-          // Setting MapView From Locatation Within Firebase
-          self.geoCoder.geocodeAddressString(libraryAddress) { (placemarks, err) in
-               if let err = err {
-                    print(err)
-                    
-                    let alert = UIAlertController(title: "Sorry There Was a Problem Getting the Locaton", message: "Please Try Again Later", preferredStyle: .alert)
-                    let okay = UIAlertAction(title: "Okay", style: .default, handler: nil)
-                    let tryAgain = UIAlertAction(title: "Try Again", style: .default) { (action) in
-                         self.getData()
-                    }
-                    alert.addAction(okay)
-                    alert.addAction(tryAgain)
-               } else {
-                    let libraryLocation = placemarks?.first?.location
-                    let center = libraryLocation?.coordinate
-                    let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                    let region = MKCoordinateRegion(center: center!, span: span)
-                    self.libraryMapView.setRegion(region, animated: false)
-                    let annotation = MKPointAnnotation()
-                    annotation.coordinate = libraryLocation?.coordinate ?? CLLocationCoordinate2D()
-                    annotation.title = "Books: \(self.books.count)"
-                    self.libraryMapView.addAnnotation(annotation)
-                    self.spaceInBetween()
-               }
-          }
-     }
+//     func getLocation() {
+//          // Setting MapView From Locatation Within Firebase
+//          self.geoCoder.geocodeAddressString(libraryAddress) { (placemarks, err) in
+//               if let err = err {
+//                    print(err)
+//
+//                    let alert = UIAlertController(title: "Sorry There Was a Problem Getting the Locaton", message: "Please Try Again Later", preferredStyle: .alert)
+//                    let okay = UIAlertAction(title: "Okay", style: .default, handler: nil)
+//                    let tryAgain = UIAlertAction(title: "Try Again", style: .default) { (action) in
+//                         self.getData()
+//                    }
+//                    alert.addAction(okay)
+//                    alert.addAction(tryAgain)
+//               } else {
+//                    let libraryLocation = placemarks?.first?.location
+//                    let center = libraryLocation?.coordinate
+//                    let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+//                    let region = MKCoordinateRegion(center: center!, span: span)
+//                    //self.libraryMapView.setRegion(region, animated: false)
+//                    let annotation = MKPointAnnotation()
+//                    annotation.coordinate = libraryLocation?.coordinate ?? CLLocationCoordinate2D()
+//                    annotation.title = "Books: \(self.books.count)"
+//                    //self.libraryMapView.addAnnotation(annotation)
+//                    self.spaceInBetween()
+//               }
+//          }
+//     }
 
      @IBAction func librariesButton(_ sender: UIBarButtonItem) {
-          let vc =  storyboard?.instantiateViewController(identifier: "librariesVC")
-          navigationController?.pushViewController(vc!, animated: false)
+        let vc =  storyboard?.instantiateViewController(identifier: "librariesVC")
+        navigationController?.pushViewController(vc!, animated: false)
      }
-     
+
      func loadingError() {
          let alert = UIAlertController(title: "Error loading", message: "Bobby sucks", preferredStyle: .alert)
          alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
          present(alert, animated: true, completion: nil)
      }
+
+     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+          locationManager.stopUpdatingLocation()
+          spaceInBetween()
+     }
 }
 
 // MARK: TableViewDataSource
+@available(iOS 13.0, *)
 extension LibraryViewController: UITableViewDataSource {
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
           print("This is book count: \(books.count)")

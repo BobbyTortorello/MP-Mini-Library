@@ -115,7 +115,9 @@
 				DDF14210DF954268280A7EDB /* Pods */,
 				A74A24BB20B2BEA1D0259751 /* Frameworks */,
 			);
+			indentWidth = 5;
 			sourceTree = "<group>";
+			tabWidth = 5;
 		};
 		6A29C40B2595392A00893590 /* Products */ = {
 			isa = PBXGroup;
@@ -624,7 +626,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "App-Industries-Inc.MP-Mini-Library";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -645,7 +647,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "App-Industries-Inc.MP-Mini-Library";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
