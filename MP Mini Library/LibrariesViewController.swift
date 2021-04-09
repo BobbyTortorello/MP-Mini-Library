@@ -18,7 +18,7 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
      private var libraires: [Library] = []
      private var books: [Books] = []
      
-     private var favorites = [String]()
+     var favorites = [String]()
      @IBOutlet weak var favoriteNumberImageView: UIImageView!
      
      var library: Library?
@@ -30,8 +30,10 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
      var libraryDistance = Double()
      var libraryIndicator = Int()
      
-    let userDefaults = UserDefaults.standard
-    let favorite = Bool()
+     let userDefaults = UserDefaults.standard
+     let favorite = Bool()
+     
+     private let spacing:CGFloat = 16.0
     
      override func viewDidLoad() {
      super.viewDidLoad()
@@ -39,13 +41,16 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
           libraryTableView.dataSource = self
           favoritesCollectionView.delegate = self
           favoritesCollectionView.dataSource = self
+          
+          favorites.removeAll()
           getData()
-          //moveTableView()
           
           locationManager.delegate = self
           locationManager.requestWhenInUseAuthorization()
           locationManager.startUpdatingLocation()
           
+          libraryTableView.reloadData()
+          favoritesCollectionView.reloadData()
      }
      
 // MARK: Custom Functions
@@ -53,12 +58,20 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
           let simplifiedFavorites = favorites.uniqued()
           if simplifiedFavorites.count >= 1 {
                libraryTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 213.5).isActive = true
-          } else {
-               libraryTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 50.0).isActive = true
+               print("This works")
           }
-          print("Current Favorites \(simplifiedFavorites.count)")
+          if simplifiedFavorites.count == 0 {
+               libraryTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 66.5).isActive = true
+          }
      }
+     
+     func addFavorites(libraryNumber: String) {
+          favorites.append(libraryNumber)
+          favoritesCollectionView.reloadData()
+     }
+     
      func getData() {
+          libraires.removeAll()
           firestore.collection("miniLibraries").getDocuments { (querySnapshot, err) in
                if let err = err {
                     print("Could not get files: \(err)")
@@ -79,6 +92,7 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
           getData()
           moveTableView()
           favoritesCollectionView.reloadData()
+          libraryTableView.reloadData()
      }
      
      @IBAction func filterButton(_ sender: UIBarButtonItem) {
@@ -96,7 +110,7 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
           
           switch segue.identifier {
           case "tableView":
-               guard let indexPath = (sender as? UIView)?.findTableViewIndexPath() else {return}
+               guard let indexPath = libraryTableView.indexPathForSelectedRow else {return}
                guard let nvc = segue.destination as? LibraryViewController else {return}
                nvc.libraryNumber = libraires[indexPath.row].number
           default: return
@@ -116,9 +130,8 @@ extension LibrariesViewController: UITableViewDataSource {
           cell?.populate(library: library)
           cell?.favorite()
           
-          if userDefaults.bool(forKey: "favorite-Library Number \(library.number)") == true {
-               favorites.append(library.number)
-               print(favorites.count)
+          if userDefaults.bool(forKey: "favorite-\(library.number)") == true {
+               addFavorites(libraryNumber: library.number)
                moveTableView()
                favoritesCollectionView.reloadData()
           }
@@ -172,16 +185,15 @@ extension Sequence where Element: Hashable {
 
 // MARK: TableViewCell Class
 class LibraryTableViewCell: UITableViewCell {
-     
      @IBOutlet var libraryNumberLabel: UILabel!
      @IBOutlet var libraryAddressLabel: UILabel!
      @IBOutlet var libraryDistanceLabel: UILabel!
      @IBOutlet var booksAvailableLabel: UILabel!
      @IBOutlet var favoriteButton: UIButton!
      let userDefaults = UserDefaults.standard
-    
+     
      func populate(library: Library) {
-          libraryNumberLabel.text = "Library Number \(library.number)"
+          libraryNumberLabel.text = "\(library.number)"
           libraryAddressLabel.text = library.location
           booksAvailableLabel.text = "Number of Books at Library: \(library.books)"
      }
@@ -189,7 +201,6 @@ class LibraryTableViewCell: UITableViewCell {
      func favorite() {
           if userDefaults.bool(forKey: "favorite-\(libraryNumberLabel.text!)") == true {
                favoriteButton.setImage(#imageLiteral(resourceName: "favoriteFilled"), for: .normal)
-               print(userDefaults.bool(forKey: "favorite-\(libraryNumberLabel.text!)"))
           } else {
                favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: .normal)
           }
@@ -199,11 +210,25 @@ class LibraryTableViewCell: UITableViewCell {
           if favoriteButton.currentImage == #imageLiteral(resourceName: "favorite") {
                favoriteButton.setImage(#imageLiteral(resourceName: "favoriteFilled"), for: .normal)
                userDefaults.set(true, forKey: "favorite-\(libraryNumberLabel.text!)")
-               print(libraryNumberLabel.text!)
-               print(userDefaults.bool(forKey: "favorite-\(libraryNumberLabel.text!)"))
+               let alert = UIAlertController(title: "Library Number \(libraryNumberLabel.text!)",
+                                             message: "Added to Favorites! :)", preferredStyle: .actionSheet)
+               parentViewController?.present(alert, animated: true, completion: nil)
+               let secondsToDelay = 1.5
+               DispatchQueue.main.asyncAfter(deadline: .now() + secondsToDelay) {
+                    self.parentViewController?.dismiss(animated: true, completion: nil)
+                    self.parentViewController?.viewDidLoad()
+               }
           } else {
                favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: .normal)
                userDefaults.setValue(false, forKey: "favorite-\(libraryNumberLabel.text!)")
+               let alert = UIAlertController(title: "Library Number \(libraryNumberLabel.text!)",
+                                             message: "Has Been Removed from Favorites! :(", preferredStyle: .actionSheet)
+               parentViewController?.present(alert, animated: true, completion: nil)
+               let secondsToDelay = 1.5
+               DispatchQueue.main.asyncAfter(deadline: .now() + secondsToDelay) {
+                    self.parentViewController?.dismiss(animated: true, completion: nil)
+                    self.parentViewController?.viewDidLoad()
+               }
           }
      }
 }
@@ -217,51 +242,4 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
      }
 }
 
-extension UIView {
-    func findCollectionView() -> UICollectionView? {
-        if let collectionView = self as? UICollectionView {
-            return collectionView
-        } else {
-            return superview?.findCollectionView()
-        }
-    }
-
-    func findCollectionViewCell() -> UICollectionViewCell? {
-        if let cell = self as? UICollectionViewCell {
-            return cell
-        } else {
-            return superview?.findCollectionViewCell()
-        }
-    }
-
-    func findCollectionViewIndexPath() -> IndexPath? {
-        guard let cell = findCollectionViewCell(),
-              let collectionView = cell.findCollectionView() else { return nil }
-
-        return collectionView.indexPath(for: cell)
-    }
-     
-     func findTableView() -> UITableView? {
-         if let tableView = self as? UITableView {
-             return tableView
-         } else {
-          return superview?.findTableView()
-         }
-     }
-
-     func findTableViewCell() -> UITableViewCell? {
-          if let cell = self as? UITableViewCell {
-               return cell
-          } else {
-             return superview?.findTableViewCell()
-          }
-     }
-
-     func findTableViewIndexPath() -> IndexPath? {
-          guard let cell = findTableViewCell(),
-                let tableView = cell.findTableView() else { return nil }
-
-          return tableView.indexPath(for: cell)
-     }
-
-}
+//If Looking for UIView Extension go to Local_Collection

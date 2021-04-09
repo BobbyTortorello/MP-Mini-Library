@@ -78,3 +78,62 @@ final class LocalCollection<T: DocumentSerializable> {
         stopListening()
     }
 }
+
+extension UIView {
+     func findCollectionView() -> UICollectionView? {
+         if let collectionView = self as? UICollectionView {
+             return collectionView
+         } else {
+             return superview?.findCollectionView()
+         }
+     }
+
+     func findCollectionViewCell() -> UICollectionViewCell? {
+         if let cell = self as? UICollectionViewCell {
+             return cell
+         } else {
+             return superview?.findCollectionViewCell()
+         }
+     }
+
+     func findCollectionViewIndexPath() -> IndexPath? {
+         guard let cell = findCollectionViewCell(),
+               let collectionView = cell.findCollectionView() else { return nil }
+
+         return collectionView.indexPath(for: cell)
+     }
+      
+      func findTableView() -> UITableView? {
+          if let tableView = self as? UITableView {
+              return tableView
+          } else {
+           return superview?.findTableView()
+          }
+      }
+
+      func findTableViewCell() -> UITableViewCell? {
+           if let cell = self as? UITableViewCell {
+                return cell
+           } else {
+              return superview?.findTableViewCell()
+           }
+      }
+
+      func findTableViewIndexPath() -> IndexPath? {
+           guard let cell = findTableViewCell(),
+                 let tableView = cell.findTableView() else { return nil }
+
+           return tableView.indexPath(for: cell)
+      }
+     
+     var parentViewController: UIViewController? {
+             var parentResponder: UIResponder? = self
+             while parentResponder != nil {
+                 parentResponder = parentResponder!.next
+                 if parentResponder is UIViewController {
+                     return parentResponder as? UIViewController
+                 }
+             }
+             return nil
+         }
+}

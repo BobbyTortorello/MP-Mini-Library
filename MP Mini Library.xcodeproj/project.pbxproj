@@ -24,6 +24,7 @@
 		6AF747702597B7680036DF94 /* Local Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF7476F2597B7680036DF94 /* Local Collection.swift */; };
 		B909E73F9EAFCCD0A2A657EA /* Pods_MP_Mini_Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F306D6F9CB48DF8B602FBB24 /* Pods_MP_Mini_Library.framework */; };
 		C034407DBDDB0CFD8600C1FF /* Pods_MP_Mini_Library_MP_Mini_LibraryUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95DCE9D26D24237D6429A211 /* Pods_MP_Mini_Library_MP_Mini_LibraryUITests.framework */; };
+		C576C639261FE1DA0006CCE9 /* Favorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = C576C638261FE1DA0006CCE9 /* Favorites.swift */; };
 		D62422C59E8C2699C429C72D /* Pods_MP_Mini_LibraryTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EDA704DFFCC9493001E5C97 /* Pods_MP_Mini_LibraryTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +75,7 @@
 		95DCE9D26D24237D6429A211 /* Pods_MP_Mini_Library_MP_Mini_LibraryUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MP_Mini_Library_MP_Mini_LibraryUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0694119930BD33F29C9BADB /* Pods-MP Mini LibraryTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MP Mini LibraryTests.release.xcconfig"; path = "Target Support Files/Pods-MP Mini LibraryTests/Pods-MP Mini LibraryTests.release.xcconfig"; sourceTree = "<group>"; };
 		B76F93B462CDBE6F8F04C1C6 /* Pods-MP Mini LibraryTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MP Mini LibraryTests.debug.xcconfig"; path = "Target Support Files/Pods-MP Mini LibraryTests/Pods-MP Mini LibraryTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C576C638261FE1DA0006CCE9 /* Favorites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorites.swift; sourceTree = "<group>"; };
 		F306D6F9CB48DF8B602FBB24 /* Pods_MP_Mini_Library.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MP_Mini_Library.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -136,6 +138,7 @@
 				6A29C40F2595392A00893590 /* SceneDelegate.swift */,
 				6A29C4112595392A00893590 /* StartViewController.swift */,
 				6AA7A4DE25971C6B0075F132 /* LibrariesViewController.swift */,
+				C576C638261FE1DA0006CCE9 /* Favorites.swift */,
 				6A1EE7E52599188D007E99B8 /* LibraryViewController.swift */,
 				6AF7474A2597A6C30036DF94 /* Library.swift */,
 				6AB7787C25AC38BD008EC125 /* Books.swift */,
@@ -433,6 +436,7 @@
 				6A29C4122595392A00893590 /* StartViewController.swift in Sources */,
 				6AA7A4DF25971C6B0075F132 /* LibrariesViewController.swift in Sources */,
 				6A1EE7E62599188D007E99B8 /* LibraryViewController.swift in Sources */,
+				C576C639261FE1DA0006CCE9 /* Favorites.swift in Sources */,
 				6A29C4182595392A00893590 /* MP_Mini_Library.xcdatamodeld in Sources */,
 				6AF747702597B7680036DF94 /* Local Collection.swift in Sources */,
 				6A29C40E2595392A00893590 /* AppDelegate.swift in Sources */,
