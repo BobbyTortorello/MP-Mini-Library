@@ -207,8 +207,21 @@
                                     <barButtonItem title="Settings" image="gearshape" catalog="system" id="6RJ-d3-CXU"/>
                                 </items>
                             </toolbar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="185" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Cn1-OX-hBX">
-                                <rect key="frame" x="0.0" y="213" width="414" height="600"/>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ub5-NM-hbH">
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <items>
+                                    <navigationItem id="HIP-ia-JQP">
+                                        <barButtonItem key="rightBarButtonItem" title="Filter" id="z5t-Sv-MSm">
+                                            <inset key="largeContentSizeImageInsets" minX="1" minY="0.0" maxX="1" maxY="0.0"/>
+                                            <connections>
+                                                <action selector="filterButton:" destination="qLE-CC-1aH" id="VPV-Zr-9vb"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="185" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Cn1-OX-hBX">
+                                <rect key="frame" x="0.0" y="218" width="414" height="595"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="cell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="185" id="DWG-fd-vLY" customClass="LibraryTableViewCell" customModule="MP_Mini_Library" customModuleProvider="target">
@@ -283,24 +296,11 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ub5-NM-hbH">
-                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                                <items>
-                                    <navigationItem id="HIP-ia-JQP">
-                                        <barButtonItem key="rightBarButtonItem" title="Filter" id="z5t-Sv-MSm">
-                                            <inset key="largeContentSizeImageInsets" minX="1" minY="0.0" maxX="1" maxY="0.0"/>
-                                            <connections>
-                                                <action selector="filterButton:" destination="qLE-CC-1aH" id="VPV-Zr-9vb"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bns-lP-H6f"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Cn1-OX-hBX" firstAttribute="top" secondItem="Ub5-NM-hbH" secondAttribute="bottom" priority="250" id="2BG-rJ-Srh"/>
+                            <constraint firstItem="Cn1-OX-hBX" firstAttribute="top" secondItem="Ub5-NM-hbH" secondAttribute="bottom" id="2BG-rJ-Srh"/>
                             <constraint firstItem="Ub5-NM-hbH" firstAttribute="trailing" secondItem="Bns-lP-H6f" secondAttribute="trailing" id="54d-PN-1QV"/>
                             <constraint firstItem="DTm-F2-sQ3" firstAttribute="leading" secondItem="Bns-lP-H6f" secondAttribute="leading" id="7IQ-5v-GOo"/>
                             <constraint firstItem="DTm-F2-sQ3" firstAttribute="top" relation="lessThanOrEqual" secondItem="pTj-CG-BwU" secondAttribute="bottom" priority="250" constant="625" id="Ayd-r8-3vj"/>
@@ -316,7 +316,7 @@
                             <constraint firstItem="DTm-F2-sQ3" firstAttribute="bottom" secondItem="Bns-lP-H6f" secondAttribute="bottom" id="fcY-Iv-BOW"/>
                             <constraint firstItem="Ub5-NM-hbH" firstAttribute="leading" secondItem="Bns-lP-H6f" secondAttribute="leading" id="kkC-AB-qzE"/>
                             <constraint firstItem="Ub5-NM-hbH" firstAttribute="leading" secondItem="Bns-lP-H6f" secondAttribute="leading" id="m8J-pj-40L"/>
-                            <constraint firstItem="Cn1-OX-hBX" firstAttribute="top" secondItem="Ub5-NM-hbH" secondAttribute="bottom" priority="250" id="x5v-AF-VDH"/>
+                            <constraint firstItem="Cn1-OX-hBX" firstAttribute="top" secondItem="Ub5-NM-hbH" secondAttribute="bottom" constant="130" id="vJB-LQ-1Zi"/>
                             <constraint firstItem="Bns-lP-H6f" firstAttribute="bottom" secondItem="Cn1-OX-hBX" secondAttribute="bottom" constant="49" id="xUe-Gy-Iah"/>
                             <constraint firstItem="Ub5-NM-hbH" firstAttribute="top" secondItem="Bns-lP-H6f" secondAttribute="top" id="zRr-Gg-b1S"/>
                         </constraints>
@@ -324,6 +324,8 @@
                     <connections>
                         <outlet property="favoritesCollectionView" destination="pTj-CG-BwU" id="bbq-pI-yIf"/>
                         <outlet property="libraryTableView" destination="Cn1-OX-hBX" id="wUY-lJ-QvO"/>
+                        <outlet property="tableViewFavorites" destination="vJB-LQ-1Zi" id="ZuM-Vw-bbk"/>
+                        <outlet property="tableViewNoFavorites" destination="2BG-rJ-Srh" id="UaX-13-nTY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Pv-BS-rOf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -23,6 +23,9 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
      
      var library: Library?
      
+     @IBOutlet weak var tableViewNoFavorites: NSLayoutConstraint!
+     @IBOutlet weak var tableViewFavorites: NSLayoutConstraint!
+     
      let firestore = Firestore.firestore()
      let geoCoder = CLGeocoder()
      let locationManager = CLLocationManager()
@@ -44,12 +47,13 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
           
           favorites.removeAll()
           getData()
+          moveTableView()
           
           locationManager.delegate = self
           locationManager.requestWhenInUseAuthorization()
           locationManager.startUpdatingLocation()
           
-          libraryTableView.reloadData()
+//          libraryTableView.reloadData()
           favoritesCollectionView.reloadData()
      }
      
@@ -57,11 +61,14 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
      func moveTableView() {
           let simplifiedFavorites = favorites.uniqued()
           if simplifiedFavorites.count >= 1 {
-               libraryTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 213.5).isActive = true
+               tableViewFavorites.priority = UILayoutPriority.defaultHigh
+               tableViewNoFavorites.priority = UILayoutPriority.defaultLow
                print("This works")
           }
           if simplifiedFavorites.count == 0 {
-               libraryTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 66.5).isActive = true
+               tableViewNoFavorites.priority = UILayoutPriority.defaultHigh
+               tableViewFavorites.priority = UILayoutPriority.defaultLow
+               print("This Should Work")
           }
      }
      
@@ -131,9 +138,10 @@ extension LibrariesViewController: UITableViewDataSource {
           cell?.favorite()
           
           if userDefaults.bool(forKey: "favorite-\(library.number)") == true {
-               addFavorites(libraryNumber: library.number)
+               favorites.append(library.number)
                moveTableView()
                favoritesCollectionView.reloadData()
+               
           }
           
           if libraryIndicator == 1 {
@@ -163,7 +171,8 @@ extension LibrariesViewController: UICollectionViewDataSource {
      }
 
      func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as? FavoriteCollectionViewCell
+          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell",
+                                                        for: indexPath) as? FavoriteCollectionViewCell
           let simplifiedFavorites = favorites.uniqued()
           cell?.populate(libraryNumber: simplifiedFavorites[indexPath.row])
           return cell ?? FavoriteCollectionViewCell()
