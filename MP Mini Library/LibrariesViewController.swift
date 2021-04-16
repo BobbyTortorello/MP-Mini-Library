@@ -54,7 +54,7 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
           locationManager.startUpdatingLocation()
           
 //          libraryTableView.reloadData()
-          favoritesCollectionView.reloadData()
+//          favoritesCollectionView.reloadData()
      }
      
 // MARK: Custom Functions
@@ -88,6 +88,13 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
                          self.libraires.append(document!)
                          print(self.libraires.count)
                          self.libraryTableView.reloadData()
+                         
+                         if self.userDefaults.bool(forKey: "favorite-\(document?.number ?? String())") == true {
+                              self.favorites.append(document?.number ?? String())
+                              self.moveTableView()
+                              self.favoritesCollectionView.reloadData()
+                              
+                         }
                     }
                }
           }
@@ -108,18 +115,15 @@ class LibrariesViewController: UIViewController, UITableViewDelegate, CLLocation
      
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
           switch segue.identifier {
-          case "collectionView":
-               guard let indexPath = (sender as? UIView)?.findCollectionViewIndexPath() else { return }
-               guard let nvc = segue.destination as? LibraryViewController else { return }
-               nvc.libraryNumber = favorites[indexPath.row]
-          default: return
-          }
-          
-          switch segue.identifier {
           case "tableView":
                guard let indexPath = libraryTableView.indexPathForSelectedRow else {return}
                guard let nvc = segue.destination as? LibraryViewController else {return}
                nvc.libraryNumber = libraires[indexPath.row].number
+               
+          case "collectionView":
+               guard let indexPath = (sender as? UIView)?.findCollectionViewIndexPath() else { return }
+               guard let nvc = segue.destination as? LibraryViewController else { return }
+               nvc.libraryNumber = favorites[indexPath.row]
           default: return
           }
      }
@@ -136,13 +140,6 @@ extension LibrariesViewController: UITableViewDataSource {
           let library = libraires[indexPath.row]
           cell?.populate(library: library)
           cell?.favorite()
-          
-          if userDefaults.bool(forKey: "favorite-\(library.number)") == true {
-               favorites.append(library.number)
-               moveTableView()
-               favoritesCollectionView.reloadData()
-               
-          }
           
           if libraryIndicator == 1 {
                cell?.libraryDistanceLabel.text = "The library is \(String(libraryDistance)) miles away from you."
@@ -225,6 +222,8 @@ class LibraryTableViewCell: UITableViewCell {
                let secondsToDelay = 1.5
                DispatchQueue.main.asyncAfter(deadline: .now() + secondsToDelay) {
                     self.parentViewController?.dismiss(animated: true, completion: nil)
+               }
+               DispatchQueue.main.asyncAfter(wallDeadline: .now()) {
                     self.parentViewController?.viewDidLoad()
                }
           } else {
@@ -236,6 +235,8 @@ class LibraryTableViewCell: UITableViewCell {
                let secondsToDelay = 1.5
                DispatchQueue.main.asyncAfter(deadline: .now() + secondsToDelay) {
                     self.parentViewController?.dismiss(animated: true, completion: nil)
+               }
+               DispatchQueue.main.asyncAfter(wallDeadline: .now()) {
                     self.parentViewController?.viewDidLoad()
                }
           }

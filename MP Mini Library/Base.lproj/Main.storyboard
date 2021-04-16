@@ -160,7 +160,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pTj-CG-BwU">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pTj-CG-BwU">
                                 <rect key="frame" x="0.0" y="93" width="414" height="125"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -220,9 +220,8 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="185" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Cn1-OX-hBX">
-                                <rect key="frame" x="0.0" y="218" width="414" height="595"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="185" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Cn1-OX-hBX">
+                                <rect key="frame" x="0.0" y="226" width="414" height="587"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="cell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="185" id="DWG-fd-vLY" customClass="LibraryTableViewCell" customModule="MP_Mini_Library" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="185"/>
@@ -316,11 +315,12 @@
                             <constraint firstItem="DTm-F2-sQ3" firstAttribute="bottom" secondItem="Bns-lP-H6f" secondAttribute="bottom" id="fcY-Iv-BOW"/>
                             <constraint firstItem="Ub5-NM-hbH" firstAttribute="leading" secondItem="Bns-lP-H6f" secondAttribute="leading" id="kkC-AB-qzE"/>
                             <constraint firstItem="Ub5-NM-hbH" firstAttribute="leading" secondItem="Bns-lP-H6f" secondAttribute="leading" id="m8J-pj-40L"/>
-                            <constraint firstItem="Cn1-OX-hBX" firstAttribute="top" secondItem="Ub5-NM-hbH" secondAttribute="bottom" constant="130" id="vJB-LQ-1Zi"/>
+                            <constraint firstItem="Cn1-OX-hBX" firstAttribute="top" secondItem="Ub5-NM-hbH" secondAttribute="bottom" constant="135" id="vJB-LQ-1Zi"/>
                             <constraint firstItem="Bns-lP-H6f" firstAttribute="bottom" secondItem="Cn1-OX-hBX" secondAttribute="bottom" constant="49" id="xUe-Gy-Iah"/>
                             <constraint firstItem="Ub5-NM-hbH" firstAttribute="top" secondItem="Bns-lP-H6f" secondAttribute="top" id="zRr-Gg-b1S"/>
                         </constraints>
                     </view>
+                    <size key="freeformSize" width="414" height="896"/>
                     <connections>
                         <outlet property="favoritesCollectionView" destination="pTj-CG-BwU" id="bbq-pI-yIf"/>
                         <outlet property="libraryTableView" destination="Cn1-OX-hBX" id="wUY-lJ-QvO"/>

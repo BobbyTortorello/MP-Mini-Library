@@ -7,12 +7,10 @@
 
 import UIKit
 
-@available(iOS 13.0, *)
 class StartViewController: UIViewController {
 
      override func viewDidLoad() {
-          super.viewDidLoad()
-          // Do any additional setup after loading the view.
+          super.viewDidLoad()          
      }
 
      @IBAction func viewLibrariesButton(_ sender: UIButton) {
